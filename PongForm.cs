@@ -48,7 +48,7 @@ namespace Pong
                 BallPic.Left -= 5;
             }
 
-            if (yDirection != null) // todo: the ball shouldn't go up or down if it bounces off the middle part of the paddle pictureboxes
+            if (yDirection != null)
             {
                 if (yDirection == "up")
                 {
@@ -62,8 +62,7 @@ namespace Pong
 
             if (BallPic.Left > 775)
             {
-                playerOneScore++;
-                PlayerOneScoreLabel.Text = playerOneScore.ToString();
+                PlayerOneScoreLabel.Text = (++playerOneScore).ToString();
                 BallPic.Location = new Point(this.Width / 2, rng.Next(1, this.Height));
                 BallTimer.Stop();
                 BallPic.Hide();
@@ -75,8 +74,7 @@ namespace Pong
             }
             else if (BallPic.Left < 0)
             {
-                playerTwoScore++;
-                PlayerTwoScoreLabel.Text = playerTwoScore.ToString();
+                PlayerTwoScoreLabel.Text = (++playerTwoScore).ToString();
                 BallPic.Location = new Point(this.Width / 2, rng.Next(1, this.Height));
                 BallTimer.Stop();
                 BallPic.Hide();
@@ -97,7 +95,7 @@ namespace Pong
             }
 
             if (BallPic.Bounds.IntersectsWith(PlayerOnePaddlePic.Bounds) || BallPic.Bounds.IntersectsWith(PlayerTwoPaddlePic.Bounds))
-            {
+            { // todo: the ball shouldn't go up or down if it bounces off the middle part of the paddle pictureboxes
                 if (xDirection == "left")
                 {
                     xDirection = "right";
@@ -119,30 +117,30 @@ namespace Pong
         }
         private void PongForm_KeyDown(object sender, KeyEventArgs e) // caveat: player 1 and player 2 cannot control their paddles at the same time due to a WinForms limitation
         {
-            switch (e.KeyCode)
+            switch (e.KeyCode) // the paddles will not completely reach the top/bottom of the screen as originally featured in the real 1972 circuit board
             {
                 case Keys.Up:
                     if (PlayerOnePaddlePic.Top > 10)
                     {
-                        PlayerOnePaddlePic.Top -= 10;
+                        PlayerOnePaddlePic.Top -= 15;
                     }
                     break;
                 case Keys.Down:
                     if (PlayerOnePaddlePic.Top < 450)
                     {
-                        PlayerOnePaddlePic.Top += 10;
+                        PlayerOnePaddlePic.Top += 15;
                     }
                     break;
                 case Keys.W:
                     if (PlayerTwoPaddlePic.Top > 10)
                     {
-                        PlayerTwoPaddlePic.Top -= 10;
+                        PlayerTwoPaddlePic.Top -= 15;
                     }
                     break;
                 case Keys.S:
                     if (PlayerTwoPaddlePic.Top < 450)
                     {
-                        PlayerTwoPaddlePic.Top += 10;
+                        PlayerTwoPaddlePic.Top += 15;
                     }
                     break;
             }
