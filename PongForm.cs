@@ -12,6 +12,7 @@ namespace Pong
         private int playerTwoScore = 0;
 
         private bool cooldown = true;
+        private bool paused = false;
 
         private Random rng = new Random();
 
@@ -30,14 +31,12 @@ namespace Pong
 
         private void PongForm_Deactivate(object sender, EventArgs e)
         {
-            BallTimer.Stop();
-            this.Text = "Pong: Paused";
+            TogglePause();
         }
 
         private void PongForm_Activated(object sender, EventArgs e)
         {
-            BallTimer.Start();
-            this.Text = "Pong";
+            TogglePause();
         }
 
         private void BallTimer_Tick(object sender, EventArgs e)
@@ -92,32 +91,54 @@ namespace Pong
         }
         private void PongForm_KeyDown(object sender, KeyEventArgs e) // caveat: player 1 and player 2 cannot control their paddles at the same time due to a WinForms limitation
         {
-            switch (e.KeyCode) // the paddles will not completely reach the top/bottom of the screen as originally featured in the real 1972 circuit board
+            if (!paused)
             {
-                case Keys.Up:
-                    if (PlayerOnePaddlePic.Top > 10)
-                    {
-                        PlayerOnePaddlePic.Top -= 15;
-                    }
-                    break;
-                case Keys.Down:
-                    if (PlayerOnePaddlePic.Top < 450)
-                    {
-                        PlayerOnePaddlePic.Top += 15;
-                    }
-                    break;
-                case Keys.W:
-                    if (PlayerTwoPaddlePic.Top > 10)
-                    {
-                        PlayerTwoPaddlePic.Top -= 15;
-                    }
-                    break;
-                case Keys.S:
-                    if (PlayerTwoPaddlePic.Top < 450)
-                    {
-                        PlayerTwoPaddlePic.Top += 15;
-                    }
-                    break;
+                switch (e.KeyCode) // the paddles will not completely reach the top/bottom of the screen as originally featured in the real 1972 circuit board
+                {
+                    case Keys.Up:
+                        if (PlayerOnePaddlePic.Top > 10)
+                        {
+                            PlayerOnePaddlePic.Top -= 15;
+                        }
+                        break;
+                    case Keys.Down:
+                        if (PlayerOnePaddlePic.Top < 450)
+                        {
+                            PlayerOnePaddlePic.Top += 15;
+                        }
+                        break;
+                    case Keys.W:
+                        if (PlayerTwoPaddlePic.Top > 10)
+                        {
+                            PlayerTwoPaddlePic.Top -= 15;
+                        }
+                        break;
+                    case Keys.S:
+                        if (PlayerTwoPaddlePic.Top < 450)
+                        {
+                            PlayerTwoPaddlePic.Top += 15;
+                        }
+                        break;
+                }
+            }
+
+            if (e.KeyCode == Keys.Escape)
+            {
+                TogglePause();
+            }
+        }
+
+        private void TogglePause()
+        {
+            paused ^= true;
+            if (paused)
+            {
+                BallTimer.Stop();
+                this.Text = "Pong: Paused";
+            } else
+            {
+                BallTimer.Start();
+                this.Text = "Pong";
             }
         }
     }
