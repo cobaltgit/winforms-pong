@@ -6,6 +6,7 @@ namespace Pong
     {
         private int XSpeed = 5;
         private int YSpeed = 5;
+        private int BallBottomBoundary = 550;
 
         private int PlayerOneScore = 0;
         private int PlayerTwoScore = 0;
@@ -63,7 +64,7 @@ namespace Pong
             if (BallPic.Left > 800)
             {
                 PlayerOneScoreLabel.Text = (++PlayerOneScore).ToString();
-                BallPic.Location = new Point(this.Width / 2, rng.Next(1, this.Height));
+                BallPic.Location = new Point(this.Width / 2, rng.Next(1, BallBottomBoundary) % YSpeed);
                 BallTimer.Interval = 1000;
                 BallPic.Hide();
                 Cooldown ^= true;
@@ -74,7 +75,7 @@ namespace Pong
             else if (BallPic.Right < 0)
             {
                 PlayerTwoScoreLabel.Text = (++PlayerTwoScore).ToString();
-                BallPic.Location = new Point(this.Width / 2, rng.Next(1, this.Height) % YSpeed);
+                BallPic.Location = new Point(this.Width / 2, rng.Next(1, BallBottomBoundary) % YSpeed);
                 BallTimer.Interval = 1000;
                 BallPic.Hide();
                 Cooldown ^= true;
@@ -83,7 +84,7 @@ namespace Pong
                 YSpeed = -YSpeed;
             }
 
-            if (BallPic.Top <= 0 || BallPic.Top >= 550)
+            if (BallPic.Top <= 0 || BallPic.Top >= BallBottomBoundary)
             {
                 YSpeed = -YSpeed;
             }
