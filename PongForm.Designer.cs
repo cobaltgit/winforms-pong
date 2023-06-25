@@ -45,7 +45,7 @@
             // BallPic
             // 
             BallPic.BackColor = SystemColors.Control;
-            BallPic.Location = new Point(130, 0);
+            BallPic.Location = new Point(400, 300);
             BallPic.Name = "BallPic";
             BallPic.Size = new Size(10, 10);
             BallPic.TabIndex = 0;
@@ -54,7 +54,7 @@
             // BallTimer
             // 
             BallTimer.Enabled = true;
-            BallTimer.Interval = 5;
+            BallTimer.Interval = 1000;
             BallTimer.Tick += BallTimer_Tick;
             // 
             // PlayerOnePaddlePic

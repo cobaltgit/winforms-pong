@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Threading;
 
 namespace Pong
@@ -9,6 +10,8 @@ namespace Pong
 
         private int playerOneScore = 0;
         private int playerTwoScore = 0;
+
+        private bool firstTickElapsed = false;
 
         private Random rng = new Random();
 
@@ -39,6 +42,12 @@ namespace Pong
 
         private void BallTimer_Tick(object sender, EventArgs e)
         {
+            if (!firstTickElapsed)
+            {
+                firstTickElapsed = true;
+                BallTimer.Interval = 15;
+            }
+
             BallPic.Left -= xSpeed;
             BallPic.Top -= ySpeed;
 
