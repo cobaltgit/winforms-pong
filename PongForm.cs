@@ -1,6 +1,3 @@
-using System.Diagnostics;
-using System.Threading;
-
 namespace Pong
 {
     public partial class PongForm : Form
