@@ -32,7 +32,10 @@ namespace Pong
 
         private void PongForm_Deactivate(object sender, EventArgs e)
         {
-            TogglePause();
+            if (!paused)
+            {
+                TogglePause();
+            }
         }
 
         private void PongForm_Activated(object sender, EventArgs e)
@@ -136,7 +139,7 @@ namespace Pong
             if (paused)
             {
                 BallTimer.Stop();
-                this.Text = "Pong: Paused";
+                this.Text = "Pong: Press ESC or refocus window to unpause";
             } 
             else
             {
