@@ -40,11 +40,11 @@ namespace Pong
             if (firstStarted)
             {
                 firstStarted = false;
-            } else 
+            } 
+            else 
             { 
                 TogglePause(); 
             }
-            
         }
 
         private void BallTimer_Tick(object sender, EventArgs e)
@@ -143,7 +143,8 @@ namespace Pong
             {
                 BallTimer.Stop();
                 this.Text = "Pong: Paused";
-            } else
+            } 
+            else
             {
                 BallTimer.Start();
                 this.Text = "Pong";
