@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace Pong
 {
     public partial class PongForm : Form
@@ -52,13 +54,13 @@ namespace Pong
             if (Cooldown)
             {
                 Cooldown = false;
-                BallTimer.Interval = 15;
+                BallTimer.Interval = 35;
             }
 
             BallPic.Left -= XSpeed;
             BallPic.Top -= YSpeed;
 
-            if (BallPic.Left > 775)
+            if (BallPic.Left > 800)
             {
                 PlayerOneScoreLabel.Text = (++PlayerOneScore).ToString();
                 BallPic.Location = new Point(this.Width / 2, rng.Next(1, this.Height));
@@ -69,10 +71,10 @@ namespace Pong
                 XSpeed = -XSpeed;
                 YSpeed = -YSpeed;
             }
-            else if (BallPic.Left < 0)
+            else if (BallPic.Right < 0)
             {
                 PlayerTwoScoreLabel.Text = (++PlayerTwoScore).ToString();
-                BallPic.Location = new Point(this.Width / 2, rng.Next(1, this.Height));
+                BallPic.Location = new Point(this.Width / 2, rng.Next(1, this.Height) % YSpeed);
                 BallTimer.Interval = 1000;
                 BallPic.Hide();
                 Cooldown ^= true;
@@ -81,7 +83,7 @@ namespace Pong
                 YSpeed = -YSpeed;
             }
 
-            if (BallPic.Top < 0 || BallPic.Top > 550)
+            if (BallPic.Top <= 0 || BallPic.Top >= 550)
             {
                 YSpeed = -YSpeed;
             }
@@ -98,7 +100,7 @@ namespace Pong
                 switch (e.KeyCode) // the paddles will not completely reach the top/bottom of the screen as originally featured in the real 1972 circuit board
                 {
                     case Keys.Up:
-                        if (PlayerOnePaddlePic.Top > 10)
+                        if (PlayerOnePaddlePic.Top > 15)
                         {
                             PlayerOnePaddlePic.Top -= 15;
                         }
