@@ -11,6 +11,7 @@ namespace Pong
         private int playerOneScore = 0;
         private int playerTwoScore = 0;
 
+        private bool firstStarted = true;
         private bool cooldown = true;
         private bool paused = false;
 
@@ -36,7 +37,14 @@ namespace Pong
 
         private void PongForm_Activated(object sender, EventArgs e)
         {
-            TogglePause();
+            if (firstStarted)
+            {
+                firstStarted = false;
+            } else 
+            { 
+                TogglePause(); 
+            }
+            
         }
 
         private void BallTimer_Tick(object sender, EventArgs e)
