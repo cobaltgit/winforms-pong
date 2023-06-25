@@ -104,15 +104,6 @@ namespace Pong
                 {
                     xDirection = "left";
                 }
-
-                if (yDirection == "up")
-                {
-                    yDirection = "down";
-                }
-                else if (yDirection == "down")
-                {
-                    yDirection = "up";
-                }
             }
         }
         private void PongForm_KeyDown(object sender, KeyEventArgs e) // caveat: player 1 and player 2 cannot control their paddles at the same time due to a WinForms limitation
