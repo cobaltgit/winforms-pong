@@ -54,7 +54,7 @@ namespace Pong
             if (Cooldown)
             {
                 Cooldown = false;
-                BallTimer.Interval = 35;
+                BallTimer.Interval = 15;
             }
 
             BallPic.Left -= XSpeed;
