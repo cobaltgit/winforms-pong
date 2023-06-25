@@ -4,8 +4,8 @@ namespace Pong
 {
     public partial class PongForm : Form
     {
-        private string xDirection = "right";
-        private string yDirection = "up";
+        private int xSpeed = 5;
+        private int ySpeed = 5;
 
         private int playerOneScore = 0;
         private int playerTwoScore = 0;
@@ -39,26 +39,8 @@ namespace Pong
 
         private void BallTimer_Tick(object sender, EventArgs e)
         {
-            if (xDirection == "right")
-            {
-                BallPic.Left += 5;
-            }
-            else if (xDirection == "left")
-            {
-                BallPic.Left -= 5;
-            }
-
-            if (yDirection != null)
-            {
-                if (yDirection == "up")
-                {
-                    BallPic.Top -= 5;
-                }
-                else if (yDirection == "down")
-                {
-                    BallPic.Top += 5;
-                }
-            }
+            BallPic.Left -= xSpeed;
+            BallPic.Top -= ySpeed;
 
             if (BallPic.Left > 775)
             {
@@ -69,8 +51,8 @@ namespace Pong
                 Thread.Sleep(1000);
                 BallPic.Show();
                 BallTimer.Start();
-                xDirection = "left";
-                yDirection = yDirection == "up" ? "down" : "up";
+                xSpeed = -xSpeed;
+                ySpeed = -ySpeed;
             }
             else if (BallPic.Left < 0)
             {
@@ -81,29 +63,18 @@ namespace Pong
                 Thread.Sleep(1000);
                 BallPic.Show();
                 BallTimer.Start();
-                xDirection = "right";
-                yDirection = yDirection == "up" ? "down" : "up";
+                xSpeed = -xSpeed;
+                ySpeed = -ySpeed;
             }
 
-            if (BallPic.Top < 0)
+            if (BallPic.Top < 0 || BallPic.Top > 550)
             {
-                yDirection = "down";
-            }
-            else if (BallPic.Top > 550)
-            {
-                yDirection = "up";
+                ySpeed = -ySpeed;
             }
 
             if (BallPic.Bounds.IntersectsWith(PlayerOnePaddlePic.Bounds) || BallPic.Bounds.IntersectsWith(PlayerTwoPaddlePic.Bounds))
             { // todo: the ball shouldn't go up or down if it bounces off the middle part of the paddle pictureboxes
-                if (xDirection == "left")
-                {
-                    xDirection = "right";
-                }
-                else if (xDirection == "right")
-                {
-                    xDirection = "left";
-                }
+                xSpeed = -xSpeed;
             }
         }
         private void PongForm_KeyDown(object sender, KeyEventArgs e) // caveat: player 1 and player 2 cannot control their paddles at the same time due to a WinForms limitation
