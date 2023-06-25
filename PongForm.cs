@@ -11,7 +11,7 @@ namespace Pong
         private int playerOneScore = 0;
         private int playerTwoScore = 0;
 
-        private bool firstTickElapsed = false;
+        private bool cooldown = true;
 
         private Random rng = new Random();
 
@@ -42,9 +42,9 @@ namespace Pong
 
         private void BallTimer_Tick(object sender, EventArgs e)
         {
-            if (!firstTickElapsed)
+            if (cooldown)
             {
-                firstTickElapsed = true;
+                cooldown = false;
                 BallTimer.Interval = 15;
             }
 
@@ -55,11 +55,13 @@ namespace Pong
             {
                 PlayerOneScoreLabel.Text = (++playerOneScore).ToString();
                 BallPic.Location = new Point(this.Width / 2, rng.Next(1, this.Height));
-                BallTimer.Stop();
+                BallTimer.Interval = 1000;
                 BallPic.Hide();
-                Thread.Sleep(1000);
+                if (!cooldown)
+                {
+                    cooldown = true;
+                }
                 BallPic.Show();
-                BallTimer.Start();
                 xSpeed = -xSpeed;
                 ySpeed = -ySpeed;
             }
@@ -67,11 +69,13 @@ namespace Pong
             {
                 PlayerTwoScoreLabel.Text = (++playerTwoScore).ToString();
                 BallPic.Location = new Point(this.Width / 2, rng.Next(1, this.Height));
-                BallTimer.Stop();
+                BallTimer.Interval = 1000;
                 BallPic.Hide();
-                Thread.Sleep(1000);
+                if (!cooldown)
+                {
+                    cooldown = true;
+                }
                 BallPic.Show();
-                BallTimer.Start();
                 xSpeed = -xSpeed;
                 ySpeed = -ySpeed;
             }
