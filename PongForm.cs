@@ -112,7 +112,7 @@ namespace Pong
                         }
                         break;
                     case Keys.W:
-                        if (PlayerTwoPaddlePic.Top > 10)
+                        if (PlayerTwoPaddlePic.Top > 15)
                         {
                             PlayerTwoPaddlePic.Top -= 15;
                         }
