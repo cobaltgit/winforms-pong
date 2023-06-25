@@ -64,10 +64,7 @@ namespace Pong
                 BallPic.Location = new Point(this.Width / 2, rng.Next(1, this.Height));
                 BallTimer.Interval = 1000;
                 BallPic.Hide();
-                if (!cooldown)
-                {
-                    cooldown = true;
-                }
+                cooldown ^= true;
                 BallPic.Show();
                 xSpeed = -xSpeed;
                 ySpeed = -ySpeed;
@@ -78,10 +75,7 @@ namespace Pong
                 BallPic.Location = new Point(this.Width / 2, rng.Next(1, this.Height));
                 BallTimer.Interval = 1000;
                 BallPic.Hide();
-                if (!cooldown)
-                {
-                    cooldown = true;
-                }
+                cooldown ^= true;
                 BallPic.Show();
                 xSpeed = -xSpeed;
                 ySpeed = -ySpeed;
