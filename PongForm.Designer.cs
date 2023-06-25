@@ -35,9 +35,11 @@
             PlayerOneScoreLabel = new Label();
             PlayerTwoScoreLabel = new Label();
             PlayerTwoPaddlePic = new PictureBox();
+            Divider = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)BallPic).BeginInit();
             ((System.ComponentModel.ISupportInitialize)PlayerOnePaddlePic).BeginInit();
             ((System.ComponentModel.ISupportInitialize)PlayerTwoPaddlePic).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)Divider).BeginInit();
             SuspendLayout();
             // 
             // BallPic
@@ -95,12 +97,22 @@
             PlayerTwoPaddlePic.TabIndex = 4;
             PlayerTwoPaddlePic.TabStop = false;
             // 
+            // Divider
+            // 
+            Divider.BackColor = SystemColors.Menu;
+            Divider.Location = new Point(400, 0);
+            Divider.Name = "Divider";
+            Divider.Size = new Size(1, 600);
+            Divider.TabIndex = 5;
+            Divider.TabStop = false;
+            // 
             // PongForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.WindowText;
             ClientSize = new Size(784, 561);
+            Controls.Add(Divider);
             Controls.Add(PlayerTwoPaddlePic);
             Controls.Add(PlayerTwoScoreLabel);
             Controls.Add(PlayerOneScoreLabel);
@@ -115,6 +127,7 @@
             ((System.ComponentModel.ISupportInitialize)BallPic).EndInit();
             ((System.ComponentModel.ISupportInitialize)PlayerOnePaddlePic).EndInit();
             ((System.ComponentModel.ISupportInitialize)PlayerTwoPaddlePic).EndInit();
+            ((System.ComponentModel.ISupportInitialize)Divider).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -127,5 +140,6 @@
         private Label PlayerOneScoreLabel;
         private Label PlayerTwoScoreLabel;
         private PictureBox PlayerTwoPaddlePic;
+        private PictureBox Divider;
     }
 }

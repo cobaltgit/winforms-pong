@@ -20,7 +20,7 @@ namespace Pong
             BallTimer.Start();
         }
 
-        private void PongForm_Load(object sender, EventArgs e)                                             
+        private void PongForm_Load(object sender, EventArgs e)
         {
             this.KeyPreview = true;
         }
