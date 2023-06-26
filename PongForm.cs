@@ -89,26 +89,29 @@ namespace Pong
 
             if (BallPic.Bounds.IntersectsWith(PlayerOnePaddlePic.Bounds) || BallPic.Bounds.IntersectsWith(PlayerTwoPaddlePic.Bounds))
             {
-                PictureBox IntersectingPaddle = GetIntersectingPaddle();
-                if (BallPic.Location.Y >= IntersectingPaddle.Top - BallPic.Height && BallPic.Location.Y <= IntersectingPaddle.Top + BallPic.Height) // near-top segment of paddle
+                PictureBox? IntersectingPaddle = GetIntersectingPaddle();
+                if (IntersectingPaddle != null)
                 {
-                    YSpeed = -rng.Next(4, 6);
-                }
-                else if (BallPic.Location.Y > IntersectingPaddle.Top + BallPic.Height && BallPic.Location.Y <= IntersectingPaddle.Top + 2 * BallPic.Height) // upper-middle segment of paddle
-                {
-                    YSpeed = -rng.Next(2, 3);
-                }
-                else if (BallPic.Location.Y > IntersectingPaddle.Top + 2 * BallPic.Height && BallPic.Location.Y <= IntersectingPaddle.Top + 3 * BallPic.Height) // middle segment of paddle
-                {
-                    YSpeed = 0;
-                }
-                else if (BallPic.Location.Y > IntersectingPaddle.Top + 3 * BallPic.Height && BallPic.Location.Y <= IntersectingPaddle.Top + 4 * BallPic.Height) // lower-middle segment of paddle
-                {
-                    YSpeed = rng.Next(2, 3);
-                }
-                else if (BallPic.Location.Y > IntersectingPaddle.Top + 3 * BallPic.Height && BallPic.Location.Y <= IntersectingPaddle.Bottom + BallPic.Height) // near-bottom of paddle
-                {
-                    YSpeed = rng.Next(4, 6);
+                    if (BallPic.Location.Y >= IntersectingPaddle.Top - BallPic.Height && BallPic.Location.Y <= IntersectingPaddle.Top + BallPic.Height) // near-top segment of paddle
+                    {
+                        YSpeed = -rng.Next(4, 6);
+                    }
+                    else if (BallPic.Location.Y > IntersectingPaddle.Top + BallPic.Height && BallPic.Location.Y <= IntersectingPaddle.Top + 2 * BallPic.Height) // upper-middle segment of paddle
+                    {
+                        YSpeed = -rng.Next(2, 3);
+                    }
+                    else if (BallPic.Location.Y > IntersectingPaddle.Top + 2 * BallPic.Height && BallPic.Location.Y <= IntersectingPaddle.Top + 3 * BallPic.Height) // middle segment of paddle
+                    {
+                        YSpeed = 0;
+                    }
+                    else if (BallPic.Location.Y > IntersectingPaddle.Top + 3 * BallPic.Height && BallPic.Location.Y <= IntersectingPaddle.Top + 4 * BallPic.Height) // lower-middle segment of paddle
+                    {
+                        YSpeed = rng.Next(2, 3);
+                    }
+                    else if (BallPic.Location.Y > IntersectingPaddle.Top + 3 * BallPic.Height && BallPic.Location.Y <= IntersectingPaddle.Bottom + BallPic.Height) // near-bottom of paddle
+                    {
+                        YSpeed = rng.Next(4, 6);
+                    }
                 }
                 XSpeed = -XSpeed;
             }
@@ -167,7 +170,7 @@ namespace Pong
             }
         }
 
-        private PictureBox GetIntersectingPaddle()
+        private PictureBox? GetIntersectingPaddle()
         {
             if (BallPic.Bounds.IntersectsWith(PlayerOnePaddlePic.Bounds))
             {
