@@ -64,24 +64,22 @@ namespace Pong
             if (BallPic.Left > 800)
             {
                 PlayerOneScoreLabel.Text = (++PlayerOneScore).ToString();
-                BallPic.Location = new Point(this.Width / 2, rng.Next(1, BallBottomBoundary) % YSpeed);
+                BallPic.Location = new Point(this.Width / 2, rng.Next(15, BallBottomBoundary));
                 BallTimer.Interval = 1000;
                 BallPic.Hide();
                 Cooldown ^= true;
                 BallPic.Show();
                 XSpeed = -XSpeed;
-                YSpeed = -YSpeed;
             }
             else if (BallPic.Right < 0)
             {
                 PlayerTwoScoreLabel.Text = (++PlayerTwoScore).ToString();
-                BallPic.Location = new Point(this.Width / 2, rng.Next(1, BallBottomBoundary) % YSpeed);
+                BallPic.Location = new Point(this.Width / 2, rng.Next(15, BallBottomBoundary));
                 BallTimer.Interval = 1000;
                 BallPic.Hide();
                 Cooldown ^= true;
                 BallPic.Show();
                 XSpeed = -XSpeed;
-                YSpeed = -YSpeed;
             }
 
             if (BallPic.Top <= 0 || BallPic.Top >= BallBottomBoundary)
