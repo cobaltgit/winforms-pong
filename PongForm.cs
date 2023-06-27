@@ -87,33 +87,13 @@ namespace Pong
                 YSpeed = -YSpeed;
             }
 
-            if (BallPic.Bounds.IntersectsWith(PlayerOnePaddlePic.Bounds) || BallPic.Bounds.IntersectsWith(PlayerTwoPaddlePic.Bounds))
+            if (BallPic.Bounds.IntersectsWith(PlayerOnePaddlePic.Bounds))                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
             {
-                PictureBox? IntersectingPaddle = GetIntersectingPaddle();
-                if (IntersectingPaddle != null)
-                {
-                    if (BallPic.Location.Y >= IntersectingPaddle.Top - BallPic.Height && BallPic.Location.Y <= IntersectingPaddle.Top + BallPic.Height) // near-top segment of paddle
-                    {
-                        YSpeed = -rng.Next(4, 6);
-                    }
-                    else if (BallPic.Location.Y > IntersectingPaddle.Top + BallPic.Height && BallPic.Location.Y <= IntersectingPaddle.Top + 2 * BallPic.Height) // upper-middle segment of paddle
-                    {
-                        YSpeed = -rng.Next(2, 3);
-                    }
-                    else if (BallPic.Location.Y > IntersectingPaddle.Top + 2 * BallPic.Height && BallPic.Location.Y <= IntersectingPaddle.Top + 3 * BallPic.Height) // middle segment of paddle
-                    {
-                        YSpeed = 0;
-                    }
-                    else if (BallPic.Location.Y > IntersectingPaddle.Top + 3 * BallPic.Height && BallPic.Location.Y <= IntersectingPaddle.Top + 4 * BallPic.Height) // lower-middle segment of paddle
-                    {
-                        YSpeed = rng.Next(2, 3);
-                    }
-                    else if (BallPic.Location.Y > IntersectingPaddle.Top + 3 * BallPic.Height && BallPic.Location.Y <= IntersectingPaddle.Bottom + BallPic.Height) // near-bottom of paddle
-                    {
-                        YSpeed = rng.Next(4, 6);
-                    }
-                }
-                XSpeed = -XSpeed;
+                DoCollision(PlayerOnePaddlePic);
+            }
+            else if (BallPic.Bounds.IntersectsWith(PlayerTwoPaddlePic.Bounds))
+            {
+                DoCollision(PlayerTwoPaddlePic);
             }
         }
         private void PongForm_KeyDown(object sender, KeyEventArgs e) // caveat: player 1 and player 2 cannot control their paddles at the same time due to a WinForms limitation
@@ -170,17 +150,29 @@ namespace Pong
             }
         }
 
-        private PictureBox? GetIntersectingPaddle()
-        {
-            if (BallPic.Bounds.IntersectsWith(PlayerOnePaddlePic.Bounds))
+        private void DoCollision(PictureBox Paddle)
+        { // todo: ball should bounce off the top/bottom edges of the paddle
+            if (BallPic.Location.Y >= Paddle.Top - BallPic.Height && BallPic.Location.Y <= Paddle.Top + BallPic.Height) // near-top segment of paddle
             {
-                return PlayerOnePaddlePic;
+                YSpeed = -rng.Next(4, 6);
             }
-            else if (BallPic.Bounds.IntersectsWith(PlayerTwoPaddlePic.Bounds))
+            else if (BallPic.Location.Y > Paddle.Top + BallPic.Height && BallPic.Location.Y <= Paddle.Top + 2 * BallPic.Height) // upper-middle segment of paddle
             {
-                return PlayerTwoPaddlePic;
+                YSpeed = -rng.Next(2, 3);
             }
-            return null;
+            else if (BallPic.Location.Y > Paddle.Top + 2 * BallPic.Height && BallPic.Location.Y <= Paddle.Top + 3 * BallPic.Height) // middle segment of paddle
+            {
+                YSpeed = 0;
+            }
+            else if (BallPic.Location.Y > Paddle.Top + 3 * BallPic.Height && BallPic.Location.Y <= Paddle.Top + 4 * BallPic.Height) // lower-middle segment of paddle
+            {
+                YSpeed = rng.Next(2, 3);
+            }
+            else if (BallPic.Location.Y > Paddle.Top + 3 * BallPic.Height && BallPic.Location.Y <= Paddle.Bottom + BallPic.Height) // near-bottom of paddle
+            {
+                YSpeed = rng.Next(4, 6);
+            }
+            XSpeed = -XSpeed;
         }
     }
 }
