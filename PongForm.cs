@@ -12,7 +12,7 @@ namespace Pong
         private int PlayerTwoScore = 0;
 
         private bool FirstStarted = true;
-        private bool Cooldown = true;
+        private bool Reset = true;
         private bool Paused = false;
 
         private Random rng = new Random();
@@ -52,9 +52,10 @@ namespace Pong
 
         private void BallTimer_Tick(object sender, EventArgs e)
         {
-            if (Cooldown)
+            if (Reset)
             {
-                Cooldown = false;
+                Reset = false;
+                BallPic.Show();
                 BallTimer.Interval = 15;
             }
 
@@ -64,22 +65,12 @@ namespace Pong
             if (BallPic.Left > 800)
             {
                 PlayerOneScoreLabel.Text = (++PlayerOneScore).ToString();
-                BallPic.Location = new Point(this.Width / 2, rng.Next(15, BallBottomBoundary));
-                BallTimer.Interval = 1000;
-                BallPic.Hide();
-                Cooldown ^= true;
-                BallPic.Show();
-                XSpeed = -XSpeed;
+                ResetBall();
             }
             else if (BallPic.Right < 0)
             {
                 PlayerTwoScoreLabel.Text = (++PlayerTwoScore).ToString();
-                BallPic.Location = new Point(this.Width / 2, rng.Next(15, BallBottomBoundary));
-                BallTimer.Interval = 1000;
-                BallPic.Hide();
-                Cooldown ^= true;
-                BallPic.Show();
-                XSpeed = -XSpeed;
+                ResetBall();
             }
 
             if (BallPic.Top <= 0 || BallPic.Top >= BallBottomBoundary)
@@ -173,6 +164,13 @@ namespace Pong
                 YSpeed = rng.Next(4, 6);
             }
             XSpeed = -XSpeed;
+        }
+        private void ResetBall()
+        {
+            BallPic.Location = new Point(this.Width / 2, BallPic.Top);
+            BallTimer.Interval = 2000;
+            BallPic.Hide();
+            Reset ^= true;
         }
     }
 }
