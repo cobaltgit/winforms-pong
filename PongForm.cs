@@ -6,7 +6,7 @@ namespace Pong
     {
         private int XSpeed = 5;
         private int YSpeed = 5;
-        private int BallBottomBoundary = 550;
+        private const int BallBottomBoundary = 550;
 
         private int PlayerOneScore = 0;
         private int PlayerTwoScore = 0;
