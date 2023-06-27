@@ -1,5 +1,3 @@
-using System.Diagnostics;
-
 namespace Pong
 {
     public partial class PongForm : Form
@@ -25,6 +23,19 @@ namespace Pong
             BallTimer.Start();
         }
 
+        protected override void OnPaint(PaintEventArgs e)
+        { // Draws the divider line
+            base.OnPaint(e);
+            int Midpoint = this.Width / 2;
+
+            using (Pen pen = new Pen(Color.White, 2f))
+            {
+                pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+                pen.DashPattern = new float[] { 5, 5, 5, 5 };
+                e.Graphics.DrawLine(pen, Midpoint, 0, Midpoint, this.Height);
+            }
+        }
+
         private void PongForm_Load(object sender, EventArgs e)
         {
             this.KeyPreview = true;
@@ -43,10 +54,10 @@ namespace Pong
             if (FirstStarted)
             {
                 FirstStarted = false;
-            } 
-            else 
-            { 
-                TogglePause(); 
+            }
+            else
+            {
+                TogglePause();
             }
         }
 
@@ -78,7 +89,7 @@ namespace Pong
                 YSpeed = -YSpeed;
             }
 
-            if (BallPic.Bounds.IntersectsWith(PlayerOnePaddlePic.Bounds))                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+            if (BallPic.Bounds.IntersectsWith(PlayerOnePaddlePic.Bounds))
             {
                 DoCollision(PlayerOnePaddlePic);
             }
@@ -133,7 +144,7 @@ namespace Pong
             {
                 BallTimer.Stop();
                 this.Text = "Pong: Press ESC or refocus window to unpause";
-            } 
+            }
             else
             {
                 BallTimer.Start();
