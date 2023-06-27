@@ -6,8 +6,8 @@ namespace Pong
         private int YSpeed = 5;
         private const int BallBottomBoundary = 550;
 
-        private int PlayerOneScore = 0;
-        private int PlayerTwoScore = 0;
+        private Player PlayerOne;
+        private Player PlayerTwo;
 
         private bool FirstStarted = true;
         private bool Reset = true;
@@ -16,10 +16,15 @@ namespace Pong
         private Random rng = new Random();
 
         public PongForm()
-        {
+        {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
             InitializeComponent();
+
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
+
+            this.PlayerOne = new Player(PlayerOnePaddlePic, Keys.Up, Keys.Down);
+            this.PlayerTwo = new Player(PlayerTwoPaddlePic, Keys.W, Keys.S);
+
             BallTimer.Start();
         }
 
@@ -75,12 +80,12 @@ namespace Pong
 
             if (BallPic.Left > 800)
             {
-                PlayerOneScoreLabel.Text = (++PlayerOneScore).ToString();
+                PlayerOne.AddScore(PlayerOneScoreLabel);
                 ResetBall();
             }
             else if (BallPic.Right < 0)
             {
-                PlayerTwoScoreLabel.Text = (++PlayerTwoScore).ToString();
+                PlayerTwo.AddScore(PlayerTwoScoreLabel);
                 ResetBall();
             }
 
@@ -89,46 +94,21 @@ namespace Pong
                 YSpeed = -YSpeed;
             }
 
-            if (BallPic.Bounds.IntersectsWith(PlayerOnePaddlePic.Bounds))
+            if (BallPic.Bounds.IntersectsWith(PlayerOne.Paddle.Bounds))
             {
-                DoCollision(PlayerOnePaddlePic);
+                DoCollision(PlayerOne.Paddle);
             }
-            else if (BallPic.Bounds.IntersectsWith(PlayerTwoPaddlePic.Bounds))
+            else if (BallPic.Bounds.IntersectsWith(PlayerTwo.Paddle.Bounds))
             {
-                DoCollision(PlayerTwoPaddlePic);
+                DoCollision(PlayerTwo.Paddle);
             }
         }
         private void PongForm_KeyDown(object sender, KeyEventArgs e) // caveat: player 1 and player 2 cannot control their paddles at the same time due to a WinForms limitation
         {
             if (!Paused)
             {
-                switch (e.KeyCode) // the paddles will not completely reach the top/bottom of the screen as originally featured in the real 1972 circuit board
-                {
-                    case Keys.Up:
-                        if (PlayerOnePaddlePic.Top > 15)
-                        {
-                            PlayerOnePaddlePic.Top -= 15;
-                        }
-                        break;
-                    case Keys.Down:
-                        if (PlayerOnePaddlePic.Top < 450)
-                        {
-                            PlayerOnePaddlePic.Top += 15;
-                        }
-                        break;
-                    case Keys.W:
-                        if (PlayerTwoPaddlePic.Top > 15)
-                        {
-                            PlayerTwoPaddlePic.Top -= 15;
-                        }
-                        break;
-                    case Keys.S:
-                        if (PlayerTwoPaddlePic.Top < 450)
-                        {
-                            PlayerTwoPaddlePic.Top += 15;
-                        }
-                        break;
-                }
+                PlayerOne.Move(e.KeyCode, 15);
+                PlayerTwo.Move(e.KeyCode, 15);
             }
 
             if (e.KeyCode == Keys.Escape)
