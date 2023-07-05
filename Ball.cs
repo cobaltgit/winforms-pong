@@ -40,7 +40,14 @@ namespace Pong
         }
 
         public void CollideWith(PictureBox Paddle)
-        { // todo: ball should bounce off the top/bottom edges of the paddle
+        { /*
+           * todo: ball should bounce off of top and bottom edges of the paddle
+           * pseudocode for this:
+           * if (ball intersects with top of Paddle) 
+           * {
+           *    YSpeed = -YSpeed
+           * }
+           */
             if (Graphics.Location.Y >= Paddle.Top - Graphics.Height && Graphics.Location.Y <= Paddle.Top + Graphics.Height) // near-top segment of paddle
             {
                 YSpeed = -Rand.Next(4, 6);
