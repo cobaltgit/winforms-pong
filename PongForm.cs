@@ -2,18 +2,13 @@ namespace Pong
 {
     public partial class PongForm : Form
     {
-        private int XSpeed = 5;
-        private int YSpeed = 5;
-        private const int BallBottomBoundary = 550;
-
         private Player PlayerOne;
         private Player PlayerTwo;
 
-        private bool FirstStarted = true;
-        private bool Reset = true;
-        private bool Paused = false;
+        private Ball Ball;
 
-        private Random rng = new Random();
+        private bool Reset = true;
+        private bool Paused = true;
 
         public PongForm()
         {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
@@ -24,8 +19,9 @@ namespace Pong
 
             this.PlayerOne = new Player(PlayerOnePaddlePic, Keys.Up, Keys.Down);
             this.PlayerTwo = new Player(PlayerTwoPaddlePic, Keys.W, Keys.S);
+            this.Ball = new Ball(BallPic, BallTimer);
 
-            BallTimer.Start();
+            this.Ball.Timer.Start();
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -48,22 +44,12 @@ namespace Pong
 
         private void PongForm_Deactivate(object sender, EventArgs e)
         {
-            if (!Paused)
-            {
-                TogglePause();
-            }
+            this.TogglePause();
         }
 
         private void PongForm_Activated(object sender, EventArgs e)
         {
-            if (FirstStarted)
-            {
-                FirstStarted = false;
-            }
-            else
-            {
-                TogglePause();
-            }
+            this.TogglePause();
         }
 
         private void BallTimer_Tick(object sender, EventArgs e)
@@ -71,36 +57,34 @@ namespace Pong
             if (Reset)
             {
                 Reset = false;
-                BallPic.Show();
-                BallTimer.Interval = 15;
+                Ball.IsMoving = true;
+                Ball.Graphics.Show();
+                Ball.Timer.Interval = 15;
             }
 
-            BallPic.Left -= XSpeed;
-            BallPic.Top -= YSpeed;
+            if (Ball.IsMoving)
+            {
+                Ball.DoMovement();
+            }
 
-            if (BallPic.Left > 800)
+            if (Ball.Graphics.Left > 800)
             {
                 PlayerOne.AddScore(PlayerOneScoreLabel);
-                ResetBall();
+                ResetGame();
             }
-            else if (BallPic.Right < 0)
+            else if (Ball.Graphics.Right < 0)
             {
                 PlayerTwo.AddScore(PlayerTwoScoreLabel);
-                ResetBall();
+                ResetGame();
             }
 
-            if (BallPic.Top <= 0 || BallPic.Top >= BallBottomBoundary)
+            if (Ball.IntersectsWithPaddle(PlayerOne.Paddle))
             {
-                YSpeed = -YSpeed;
+                Ball.CollideWith(PlayerOne.Paddle);
             }
-
-            if (BallPic.Bounds.IntersectsWith(PlayerOne.Paddle.Bounds))
+            else if (Ball.IntersectsWithPaddle(PlayerTwo.Paddle))
             {
-                DoCollision(PlayerOne.Paddle);
-            }
-            else if (BallPic.Bounds.IntersectsWith(PlayerTwo.Paddle.Bounds))
-            {
-                DoCollision(PlayerTwo.Paddle);
+                Ball.CollideWith(PlayerTwo.Paddle);
             }
         }
         private void PongForm_KeyDown(object sender, KeyEventArgs e) // caveat: player 1 and player 2 cannot control their paddles at the same time due to a WinForms limitation
@@ -122,45 +106,21 @@ namespace Pong
             Paused ^= true;
             if (Paused)
             {
-                BallTimer.Stop();
+                Ball.IsMoving = false;
                 this.Text = "Pong: Press ESC or refocus window to unpause";
             }
             else
             {
-                BallTimer.Start();
+                Ball.IsMoving = true;
                 this.Text = "Pong";
             }
         }
 
-        private void DoCollision(PictureBox Paddle)
-        { // todo: ball should bounce off the top/bottom edges of the paddle
-            if (BallPic.Location.Y >= Paddle.Top - BallPic.Height && BallPic.Location.Y <= Paddle.Top + BallPic.Height) // near-top segment of paddle
-            {
-                YSpeed = -rng.Next(4, 6);
-            }
-            else if (BallPic.Location.Y > Paddle.Top + BallPic.Height && BallPic.Location.Y <= Paddle.Top + 2 * BallPic.Height) // upper-middle segment of paddle
-            {
-                YSpeed = -rng.Next(2, 3);
-            }
-            else if (BallPic.Location.Y > Paddle.Top + 2 * BallPic.Height && BallPic.Location.Y <= Paddle.Top + 3 * BallPic.Height) // middle segment of paddle
-            {
-                YSpeed = 0;
-            }
-            else if (BallPic.Location.Y > Paddle.Top + 3 * BallPic.Height && BallPic.Location.Y <= Paddle.Top + 4 * BallPic.Height) // lower-middle segment of paddle
-            {
-                YSpeed = rng.Next(2, 3);
-            }
-            else if (BallPic.Location.Y > Paddle.Top + 3 * BallPic.Height && BallPic.Location.Y <= Paddle.Bottom + BallPic.Height) // near-bottom of paddle
-            {
-                YSpeed = rng.Next(4, 6);
-            }
-            XSpeed = -XSpeed;
-        }
-        private void ResetBall()
+        private void ResetGame()
         {
-            BallPic.Location = new Point(this.Width / 2, BallPic.Top);
-            BallTimer.Interval = 2000;
-            BallPic.Hide();
+            Ball.SetLocation(new Point(this.Width / 2, Ball.Graphics.Top));
+            Ball.Timer.Interval = 2000;
+            Ball.Graphics.Hide();
             Reset ^= true;
         }
     }
